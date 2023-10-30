@@ -33,6 +33,10 @@ class ShowGrade extends StatelessWidget {
                                           ? 'D'
                                           : 'E',
               style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Back'),
             )
           ],
         ),

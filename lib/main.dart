@@ -38,11 +38,49 @@ class _MyHomePageState extends State<MyHomePage> {
   final uasController = TextEditingController();
 
   void _submit(BuildContext ctx) {
-    final tm = int.parse(tmController.text);
-    final uts = int.parse(utsController.text);
-    final uas = int.parse(uasController.text);
+    // ensure all fields are filled
+    if (tmController.text.isEmpty ||
+        utsController.text.isEmpty ||
+        uasController.text.isEmpty) {
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        const SnackBar(
+          content: Text('Please fill all the fields'),
+        ),
+      );
+      return;
+    }
+
+    final int tm, uts, uas;
+
+    // catch any other input than numbers
+    try {
+      tm = int.parse(tmController.text);
+      uts = int.parse(utsController.text);
+      uas = int.parse(uasController.text);
+    } catch (e) {
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        const SnackBar(
+          content: Text('Please fill all the fields with numbers'),
+        ),
+      );
+      return;
+    }
+
+    // ensure range is 0-100
+    if (tm > 100 || tm < 0 || uts > 100 || uts < 0 || uas > 100 || uas < 0) {
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        const SnackBar(
+          content:
+              Text('Please fill all the fields with numbers between 0 and 100'),
+        ),
+      );
+      return;
+    }
+
+    // calculate grade
     final grade = tm * 0.2 + uts * 0.3 + uas * 0.5;
 
+    // go to next page
     Navigator.of(ctx).push(
       MaterialPageRoute(
         builder: (_) => ShowGrade(grade: grade),
@@ -58,35 +96,38 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'TM',
+        child: Container(
+          padding: const EdgeInsets.all(40),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'TM',
+                ),
+                controller: tmController,
               ),
-              controller: tmController,
-            ),
-            TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'UTS',
+              TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'UTS',
+                ),
+                controller: utsController,
               ),
-              controller: utsController,
-            ),
-            TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'UAS',
+              TextField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'UAS',
+                ),
+                controller: uasController,
               ),
-              controller: uasController,
-            ),
-            TextButton(
-              onPressed: () => _submit(context),
-              child: const Text('Calculate'),
-            )
-          ],
+              TextButton(
+                onPressed: () => _submit(context),
+                child: const Text('Calculate'),
+              )
+            ],
+          ),
         ),
       ),
     );
