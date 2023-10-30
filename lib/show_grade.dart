@@ -17,19 +17,19 @@ class ShowGrade extends StatelessWidget {
           children: [
             Text('Nilai akhir anda adalah $grade'),
             Text(
-              grade >= 90
+              grade >= 90 && grade <= 100 // 90 - 100
                   ? 'A'
-                  : grade > 85 && grade < 90
+                  : grade >= 85 && grade < 90 // 85 - 89
                       ? 'A-'
-                      : grade > 80 && grade < 85
+                      : grade >= 80 && grade < 85 // 80 - 84
                           ? 'B+'
-                          : grade > 75 && grade < 80
+                          : grade >= 75 && grade < 80 // 75 - 79
                               ? 'B'
-                              : grade > 70 && grade < 75
+                              : grade >= 70 && grade < 75 // 70 - 74
                                   ? 'B-'
-                                  : grade > 65 && grade < 70
+                                  : grade >= 65 && grade < 70 // 65 - 69
                                       ? 'C'
-                                      : grade > 60 && grade < 65
+                                      : grade >= 60 && grade < 65 // 60 - 64
                                           ? 'D'
                                           : 'E',
               style: Theme.of(context).textTheme.headlineMedium,
